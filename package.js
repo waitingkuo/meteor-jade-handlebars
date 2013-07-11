@@ -2,17 +2,42 @@ Package.describe({
   summary: "Write your templates using Handlebars and Jade instead of HTML and Handlebars"
 });
 
+Npm.depends({
+  'jade': "0.31.2",
+  'StringScanner': '0.0.3'
+});
+
 var fs            = Npm.require('fs');
 var path          = Npm.require('path');
-var jade          = Npm.require(path.join(process.env.PACKAGE_DIRS, 'jade-handlebars', 'jade'));
-var html_scanner  = Npm.require(path.join(process.env.PACKAGE_DIRS, 'jade-handlebars', 'html_scanner'));
-var StringScanner = Npm.require(path.join(process.env.PACKAGE_DIRS, 'jade-handlebars', 'cjs-string-scanner', 'lib', "StringScanner"));
+
+// find jade-handlebars package dir
+var packageDir = null;
+
+var basepath = path.resolve('.');
+var package_dirs = [path.join(basepath, 'packages')];
+
+if (process.env.PACKAGE_DIRS)
+  package_dirs = process.env.PACKAGE_DIRS.split(':').concat(package_dirs);
+
+(function () {
+  for (var i = 0; i < package_dirs.length; i++) {
+    var dir = path.join(package_dirs[i], 'jade-handlebars');
+    var stat = fs.statSync(dir);
+    if (stat && stat.isDirectory()) {
+      packageDir = dir;
+      break;
+    }
+  }
+}());
 
 Package.on_use(function (api) {
   api.use('templating', 'client');
 });
 
-Npm.depends({jade: "0.31.2"});
+var html_scanner  = Npm.require(path.join(packageDir, 'html_scanner'));
+var jade          = Npm.require(path.join(packageDir, 'jade'));
+var StringScanner = Npm.require(path.join(packageDir, 'cjs-string-scanner', 'lib', "StringScanner"));
+
 
 Package.register_extension(
   "jade", function(bundle, source_path, serve_path, where) {
