@@ -1,8 +1,8 @@
 {
   "name": "jade-handlebars",
   "description": "Write the templates in your Meteor Application using Handlebars and Jade instead of HTML and Handlebars",
-  "homepage": "https://github.com/unvael/meteor-jade-handlebars",
+  "homepage": "https://github.com/waitingkuo/meteor-jade-handlebars",
   "author": "Simon Degraeve",
   "version": "0.2.8",
-  "git": "https://github.com/unvael/meteor-jade-handlebars.git"
+  "git": "https://github.com/waitingkuo/meteor-jade-handlebars.git"
 }
